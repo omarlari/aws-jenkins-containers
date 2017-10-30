@@ -1,0 +1,77 @@
+Description: This template deploys a sinlge Jenkins instance
+
+Parameters:
+  KeyName:
+    Type: String
+  Subnet:
+    Type: String
+  Vpc:
+    Type: String
+
+Resources:
+
+  SecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: !Sub ${AWS::StackName}-hosts
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
+      VpcId: !Ref Vpc
+
+  Ec2Instance:
+      Type: "AWS::EC2::Instance"
+      Properties:
+        IamInstanceProfile: !Ref AdminInstanceProfile
+        ImageId: "ami-ec33cc96"
+        InstanceType: "t2.micro"
+        KeyName:
+          Ref: "KeyName"
+        NetworkInterfaces:
+          - AssociatePublicIpAddress: "true"
+            DeviceIndex: "0"
+            GroupSet:
+              - Ref: "SecurityGroup"
+            SubnetId: !Ref Subnet
+        UserData:
+          "Fn::Base64": !Sub |
+
+  AdminRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+
+  AdminRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: admin
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - '*'
+          Resource: '*'
+      Roles:
+      - !Ref 'AdminRole'
+
+  AdminInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+      - !Ref 'AdminRole'

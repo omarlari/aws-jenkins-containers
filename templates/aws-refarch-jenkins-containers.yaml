@@ -1,0 +1,38 @@
+Description: >
+  This template illustrates how to use AWS CodeBuild and AWS CodePipeline to
+  achieve continuous deployment of source code from a GitHub repository via a
+  Docker container to an Amazon EC2 Container Service cluster.
+Parameters:
+  KeyName:
+    Type: String
+    Description: Your ec2 ssh key
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterLabels:
+      KeyName:
+        default: SSH Key
+    ParameterGroups:
+      - Label:
+          default: SSH Key for Access
+        Parameters:
+          - KeyName
+
+Resources:
+  Jenkins:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/jenkins-demo-public/templates/jenkins.yaml
+      Parameters:
+        Subnet: !GetAtt VPC.Outputs.Subnet
+        Vpc: !GetAtt VPC.Outputs.VpcId
+        KeyName: !Ref KeyName
+
+  VPC:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://s3.amazonaws.com/jenkins-demo-public/templates/vpc.yaml
+      Parameters:
+        Name: !Ref AWS::StackName
+        VpcCIDR: 10.215.0.0/16
+        Subnet1CIDR: 10.215.100.0/24

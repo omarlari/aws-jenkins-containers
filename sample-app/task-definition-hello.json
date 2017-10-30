@@ -1,0 +1,11 @@
+{
+    "containerDefinitions": [
+        {
+            "name": "hello",
+            "image": "223171727691.dkr.ecr.us-west-2.amazonaws.com/movies:BUILD",
+            "memory": 500,
+            "portMappings": [{"containerPort": 80}],
+            "essential": true
+        }
+    ]
+}

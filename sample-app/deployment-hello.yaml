@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  name: movies-on-k8s
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: movies
+    spec:
+      containers:
+      - name: movies
+        image: 223171727691.dkr.ecr.us-west-2.amazonaws.com/movies:BUILD
+        ports:
+        - containerPort: 80
