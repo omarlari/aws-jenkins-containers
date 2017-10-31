@@ -22,6 +22,8 @@ Fork github repository. Setup Jenkins. Modify Security Group to allow traffic fr
 
 http://34.205.2.121/github-webhook/ - this goes into github :-(
 
+Install pip, awscli, github (or use vanilla amazon linux ami and install just docker)
+
 === Deploy the CloudFormation stack
 
 |===

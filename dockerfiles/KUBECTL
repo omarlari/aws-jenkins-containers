@@ -10,4 +10,4 @@ RUN set -x && \
     # Basic check it works.
     kubectl version --client
 
-#ENTRYPOINT ["/usr/local/bin/kubectl"]
+ENTRYPOINT ["/usr/local/bin/kubectl"]

@@ -1,16 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: hello-jenkins
+  name: hello-jenkins
+spec:
+  selector:
+    app: hello-jenkins
+  type: LoadBalancer
+  ports:
+  - name: hello-jenkins
+    protocol: TCP
+    port: 80
+---
 apiVersion: extensions/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
 kind: Deployment
 metadata:
-  name: movies-on-k8s
+  name: hello-jenkins
 spec:
   replicas: 3
   template:
     metadata:
       labels:
-        app: movies
+        app: hello-jenkins
     spec:
       containers:
       - name: movies
-        image: 223171727691.dkr.ecr.us-west-2.amazonaws.com/movies:BUILD
+        image: 016309051001.dkr.ecr.us-east-1.amazonaws.com/hello:latest
         ports:
         - containerPort: 80

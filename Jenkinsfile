@@ -17,13 +17,14 @@ node {
         ecs: {node {
         docker.image('awscli').inside{
             git 'https://github.com/omarlari/aws-jenkins-containers.git'
+            sh 'sed -i s/REPO/${ECS_REPO}/g task-definition-hello.json'
             sh 'sed -i s/BUILD/${BUILD_NUMBER}/g task-definition-hello.json'
-            sh 'aws ecs register-task-definition --cli-input-json file://task-definition-hello.json --family ${TASK_DEF} --region ${REGION}'
+            sh 'ecs register-task-definition --cli-input-json file://task-definition-hello.json --family ${TASK_DEF} --region ${REGION}'
         }
         }},
         kubernetes: { node {
-        docker.image('kubectl').inside("--volume=/home/core/.kube:/config/.kube"){
-            sh 'kubectl set image deployment/${K8S_DEPLOYMENT} movies=${ECS_REPO}/movies:${BUILD_NUMBER}'
+        docker.image('kubectl').inside("--volume=/home/ec2-user/.kube:/config/.kube"){
+            sh 'set image deployment/${K8S_DEPLOYMENT} movies=${ECS_REPO}/movies:${BUILD_NUMBER}'
             }
         }},
         swarm: { node {
