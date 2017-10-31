@@ -1,7 +1,7 @@
 node {
 
    stage 'Checkout'
-   git 'https://github.com/omarlari/movies.git'
+   git 'https://github.com/omarlari/aws-jenkins-containers.git'
 
    stage 'Build Dockerfile'
    docker.build('movies')
@@ -16,9 +16,9 @@ node {
    parallel(
         ecs: {node {
         docker.image('awscli').inside{
-            git 'https://github.com/omarlari/movies.git'
+            git 'https://github.com/omarlari/aws-jenkins-containers.git'
             sh 'sed -i s/BUILD/${BUILD_NUMBER}/g task-definition-hello.json'
-            sh 'aws ecs register-task-definition --cli-input-json file://task-definition-hello.json --family ${TASK_DEF} --region us-west-2'
+            sh 'aws ecs register-task-definition --cli-input-json file://task-definition-hello.json --family ${TASK_DEF} --region ${REGION}'
         }
         }},
         kubernetes: { node {

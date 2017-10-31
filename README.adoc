@@ -16,7 +16,11 @@ image::architecture.png[Architecture]
 
 A fucntioning Kubernetes cluster and config file to authenticate to the cluster, by default this is located at `~/.kube/config`
 
-A functioning ECS cluster.
+A functioning ECS cluster, Setup an ECR repository, build the docker container push to repo. Create a service.
+
+Fork github repository. Setup Jenkins. Modify Security Group to allow traffic from GitHub, setup GitHub hook.
+
+http://34.205.2.121/github-webhook/ - this goes into github :-(
 
 === Deploy the CloudFormation stack
 
