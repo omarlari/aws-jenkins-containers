@@ -7,8 +7,8 @@ node {
    docker.build('hello')
 
    stage 'Push to ECR'
-   docker.withRegistry('https://${ECS_REPO}', '${REGION}') {
-       docker.image('hello-jenkins').push('${BUILD_NUMBER}')
+   docker.withRegistry('${ECS_REPO}', 'ecr:${REGION}:aws') {
+       docker.image('hello').push('${BUILD_NUMBER}')
    }
 
    stage 'update application'
