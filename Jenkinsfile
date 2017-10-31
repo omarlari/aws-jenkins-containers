@@ -7,7 +7,7 @@ node {
    docker.build('hello')
 
    stage 'Push to ECR'
-   docker.withRegistry('${ECS_REPO}', 'ecr:${REGION}:ecr-credentials') {
+   docker.withRegistry('${ECS_REPO}', 'ecr:us-east-1:ecr-credentials') {
        docker.image('hello').push('${BUILD_NUMBER}')
    }
 
