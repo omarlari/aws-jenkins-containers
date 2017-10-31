@@ -8,7 +8,7 @@ node {
 
    stage 'Push to ECR'
    sh("eval \$(aws ecr get-login --no-include-email | sed 's|https://||')")
-   docker.withRegistry('https://016309051001.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-credentials') {
+   docker.withRegistry('http://016309051001.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-credentials') {
        docker.image('hello').push('${BUILD_NUMBER}')
    }
 
