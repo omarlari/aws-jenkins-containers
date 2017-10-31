@@ -1,14 +1,14 @@
 node {
 
    stage 'Checkout'
-   git 'https://github.com/omarlari/aws-jenkins-containers.git'
+   git 'https://github.com/omarlari/aws-container-sample-app.git'
 
    stage 'Build Dockerfile'
-   docker.build('movies')
+   docker.build('hello')
 
    stage 'Push to ECR'
-   docker.withRegistry('https://${ECS_REPO}', 'ecr:us-west-2:aws') {
-       docker.image('movies').push('${BUILD_NUMBER}')
+   docker.withRegistry('https://${ECS_REPO}', '${REGION}') {
+       docker.image('hello-jenkins').push('${BUILD_NUMBER}')
    }
 
    stage 'update application'
@@ -16,7 +16,7 @@ node {
    parallel(
         ecs: {node {
         docker.image('awscli').inside{
-            git 'https://github.com/omarlari/aws-jenkins-containers.git'
+            git 'https://github.com/omarlari/aws-container-sample-app.git'
             sh 'sed -i s/REPO/${ECS_REPO}/g task-definition-hello.json'
             sh 'sed -i s/BUILD/${BUILD_NUMBER}/g task-definition-hello.json'
             sh 'ecs register-task-definition --cli-input-json file://task-definition-hello.json --family ${TASK_DEF} --region ${REGION}'
