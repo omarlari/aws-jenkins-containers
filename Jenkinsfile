@@ -7,7 +7,7 @@ node {
    docker.build('hello')
 
    stage 'Push to ECR'
-   docker.withRegistry('https://${ECR_REPO}', 'ecr:us-east-1:ecr-credentials') {
+   docker.withRegistry('https://016309051001.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:ecr-credentials') {
        docker.image('hello').push('${BUILD_NUMBER}')
    }
 
