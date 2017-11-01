@@ -8,7 +8,7 @@ node {
 
    stage 'Push to ECR'
    docker.image('awscli').inside{
-    sh 'ecr get-login --region us-east-1 --no-include-email | sed 's|https://||''
+    sh("eval \$(aws ecr get-login --no-include-email | sed 's|https://||')")
    }
    docker.withRegistry('https://${ECR_REPO}', 'ecr:us-east-1:ecr-creds') {
        docker.image('hello').push('${BUILD_NUMBER}')
