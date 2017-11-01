@@ -7,6 +7,7 @@ node {
    docker.build('hello')
 
    stage 'Push to ECR'
+   docker.image('awscli').inside(ecr get-login --region us-east-1 --no-include-email | sed 's|https://||')
    docker.withRegistry('https://${ECR_REPO}', 'ecr:us-east-1:ecr-creds') {
        docker.image('hello').push('${BUILD_NUMBER}')
    }
@@ -17,7 +18,7 @@ node {
         ecs: {node {
         docker.image('awscli').inside{
             git 'https://github.com/omarlari/aws-container-sample-app.git'
-            sh 'sed -i s/REPO/${ECS_REPO}/g task-definition-hello.json'
+            sh 'sed -i s/REPO/${ECR_REPO}/g task-definition-hello.json'
             sh 'sed -i s/BUILD/${BUILD_NUMBER}/g task-definition-hello.json'
             sh 'ecs register-task-definition --cli-input-json file://task-definition-hello.json --family ${APP} --region ${REGION}'
         }
