@@ -1,16 +1,14 @@
+= Using Jenkins to deploy to multiple container orchestrators
+
 :icons:
 :linkcss:
 :imagesdir: ./images
+:toc:
 
-= Title
 
 This reference architecture demonstrates how to leverage a single delivery pipeline to deploy to multiple orchestrators. This example will show how to simultanesouly deploy to both
- ECS and Kubernetes. This demonstration could be used to deploy to hybrid scenario where you have Kubernetes on premises and ECS in the cloud. Alternatively it could also be use to deploy to
- homogenous clusters in different regions.
-
-image::architecture.png[Architecture]
-
-:toc:
+ECS and Kubernetes. This demonstration could be used to deploy to hybrid scenario where you have Kubernetes on premises and ECS in the cloud. Alternatively it could also be use to deploy to
+homogenous clusters in different regions.
 
 === Pre-Requisites
 
@@ -20,7 +18,7 @@ A functioning ECS cluster, Setup an ECR repository, build the docker container p
 
 Fork github repository. Setup Jenkins. Modify Security Group to allow traffic from GitHub, setup GitHub hook.
 
-http://34.205.2.121/github-webhook/ - this goes into github :-(
+http://<IPADDRESS>/github-webhook/
 
 Install pip, awscli, github (or use vanilla amazon linux ami and install just docker)
 
