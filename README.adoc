@@ -10,7 +10,7 @@ This reference architecture demonstrates how to leverage a single delivery pipel
 
 image::architecture.png[Architecture]
 
-
+:toc
 
 === Pre-Requisites
 
@@ -55,6 +55,42 @@ a| image::./deploy-to-aws.png[link=https://console.aws.amazon.com/cloudformation
 
 |===
 
-=== Upload configuration file to s3 bucket
+=== Prepare ec2 instance
+
+Clone Repository
+
+    git clone https://github.com/omarlari/aws-jenkins-containers.git
+
+Create directory for jenkins data and kube config
+
+    mkdir ~/jenkins-data
+    mkdir ~/.kube
+
+Build awscli and kubectl images
+
+    cd aws-jenkins-containers
+    docker build -f AWSCLI -t awscli .
+    docker build -f KUBECTL -t kubectl .
+
+SCP Kube credentials to instance
+
+    scp ~/.kube/config ec2-user@<yourip>:~/.kube
+
+Test awscli and kubectl
+
+    docker run awscli s3 ls
+    docker run -v /home/ec2-user/.kube:/config/.kube kubectl get nodes
+
+Start Jenkins
+
+    chmod u+x ~/aws-jenkins-containers/start-jenkins.sh
+    sudo ~/aws-jenkins-containers/start-jenkins.sh
+
+=== Configure Jenkins
+
+image::jenkins-getting-started.png[jenkins]
+
+=== Configure Jenkins Job
+
 
 == Conclusion
