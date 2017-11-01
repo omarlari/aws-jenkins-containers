@@ -7,10 +7,8 @@ node {
    docker.build('hello')
 
    stage 'Push to ECR'
-   docker.image('awscli').inside{
-    sh("eval \$(aws ecr get-login --no-include-email | sed 's|https://||')")
-   }
-   docker.withRegistry('https://${ECR_REPO}', 'ecr:us-east-1:ecr-creds') {
+   sh ("eval \$(docker run awscli ecr get-login --region ${REGION} --no-include-email | sed 's|https://||')")
+   docker.withRegistry('https://${ECR_REPO}', 'ecr-creds') {
        docker.image('hello').push('${BUILD_NUMBER}')
    }
 
@@ -22,12 +20,14 @@ node {
             git 'https://github.com/omarlari/aws-container-sample-app.git'
             sh 'sed -i s/REPO/${ECR_REPO}/g task-definition-hello.json'
             sh 'sed -i s/BUILD/${BUILD_NUMBER}/g task-definition-hello.json'
-            sh 'ecs register-task-definition --cli-input-json file://task-definition-hello.json --family ${APP} --region ${REGION}'
+            sh 'aws ecs register-task-definition --cli-input-json file://task-definition-hello.json --family ${APP} --region ${REGION}'
         }
         }},
         kubernetes: { node {
         docker.image('kubectl').inside("--volume=/home/ec2-user/.kube:/config/.kube"){
-            sh 'set image deployment/${APP} movies=${ECS_REPO}/movies:${BUILD_NUMBER}'
+            sh 'kubectl describe deployment ${APP}'
+            sh 'kubectl set image deployment/${APP} movies=${ECR_REPO}/hello:${BUILD_NUMBER}'
+            sh 'kubectl describe deployment ${APP}'
             }
         }},
         swarm: { node {
@@ -38,6 +38,6 @@ node {
 
    stage 'update ECS service'
    docker.image('awscli').inside{
-       sh 'aws ecs update-service --cluster ${ECS_CLUSTER} --service ${APP} --task-definition ${APP} --region us-west-2'
+       sh 'aws ecs update-service --cluster ${ECS_CLUSTER} --service ${APP} --task-definition ${APP} --region ${REGION}'
    }
 }
