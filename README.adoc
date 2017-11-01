@@ -5,7 +5,6 @@
 :imagesdir: ./images
 :toc:
 
-
 This reference architecture demonstrates how to leverage a single delivery pipeline to deploy to multiple orchestrators. This example will show how to simultanesouly deploy to both
 ECS and Kubernetes. This demonstration could be used to deploy to hybrid scenario where you have Kubernetes on premises and ECS in the cloud. Alternatively it could also be use to deploy to
 homogenous clusters in different regions.
@@ -86,7 +85,33 @@ Start Jenkins
 
 === Configure Jenkins
 
+Once you have started the jenkins container launch a browser to the IP address of the ec2 instance, you will be presented with the following screen:
+
 image::jenkins-getting-started.png[jenkins]
+
+Retrieve the initial credentials from the jenkins container:
+
+    docker ps
+    docker exec -it <CONTAINER ID> bash
+    cat /var/jenkins_home/secrets/initialAdminPassword
+    exit
+
+Go ahead and copy and paste this into Jenkins to start the Jenkins configuration.
+
+On the customize Jenkins screen, select "Install suggested plugins"
+
+image::jenkins-customize.png[jenkins]
+
+Next you will be prompted to create your first Jenkins user, if you want to avoid using the initial credentials go ahead and create an admin user:
+
+image::jenkins-first-admin.png[jenkins]
+
+You should be presented with this screen and we can finish the Jenkins configuration:
+
+image::jenkins-ready.png[jenkins]
+
+
+
 
 === Configure Jenkins Job
 
