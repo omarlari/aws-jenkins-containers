@@ -110,7 +110,19 @@ You should be presented with this screen and we can finish the Jenkins configura
 
 image::jenkins-ready.png[jenkins]
 
+Next let's add the ECR plugin. On the left hand screen click 'Manage Jenkins' > 'Manage Plugins', on the 'Available' tab filter for 'Amazon ECR plugin' and install it.
 
+This will install the following plugins:
+
+Amazon Web Services SDK
+CloudBees Amazon Web Service Credentials Plugin
+Amazon ECR plugin
+
+Go ahead and click the check-box on the bottom to restart Jenkins and then log back in.
+
+=== Configure Pipeline Job
+
+First we need to add ECR credentials into the Jenkins system
 
 
 === Configure Jenkins Job
