@@ -10,7 +10,7 @@ This reference architecture demonstrates how to leverage a single delivery pipel
 
 image::architecture.png[Architecture]
 
-:toc
+:toc:
 
 === Pre-Requisites
 
