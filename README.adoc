@@ -11,15 +11,15 @@ homogenous clusters in different regions.
 
 === Pre-Requisites
 
-A fucntioning Kubernetes cluster and config file to authenticate to the cluster, by default this is located at `~/.kube/config`
-
-A functioning ECS cluster, Setup an ECR repository, build the docker container push to repo. Create a service.
+* Operational ECS Cluster
+** An ECR Repository named 'hello'
+** An ECS task definition named 'hello-jenkins'
+** An ECS service named 'hello-jenkins'
+*** this should be behind an ALB, listening on the root path on port 80
 
 Fork github repository. Setup Jenkins. Modify Security Group to allow traffic from GitHub, setup GitHub hook.
 
 http://<IPADDRESS>/github-webhook/
-
-Install pip, awscli, github (or use vanilla amazon linux ami and install just docker)
 
 === Deploy the CloudFormation stack
 
@@ -86,9 +86,7 @@ Start Jenkins
 
 === GitHub Preparation
 
-Fork the sample application:
 
-https://github.com/omarlari/aws-container-sample-app
 
 Setup a Personal Access Token.
 
@@ -102,6 +100,10 @@ Log into GitHub “User X” account > Settings > Developer Setting > Personal a
 * admin:repo_hook
 
 Copy the personal access token, we will need to copy this over to Jenkins credentials.
+
+Fork the sample application:
+
+https://github.com/omarlari/aws-container-sample-app
 
 Next go to the forked repo. Click on Settings > Webhooks > Add webhook.
 
@@ -155,12 +157,28 @@ This will install the following plugins:
 Go ahead and click the check-box on the bottom to restart Jenkins and then log back in.
 
 Next let's configure the credentials for GitHub.  One the left side of the Jenkins home screen click "Credentials" > "Global" > "Add Credentials",
-add a credential with kinf of "Secret text" and the "Secret" dialogue box paste in the Personal Access Token that we created in GitHub.
+add a credential with kind of "Secret text" and the "Secret" dialogue box paste in the Personal Access Token that we created in GitHub.
 
 === Configure Jenkins Job
 
-Note: This part can be skipped, the ECR plugin is not properly authenticating First we need to add ECR credentials into the Jenkins system
+Create a new job, from the home screen "New Item" > "Enter and item name" > "Pipeline" > "OK"
 
+In the job configure the following:
 
+* Check Discard old builds
+* Max # of builds to keep = 5
+* GitHub project = your forked repo
+* This project is parameterized
+** add the following string parameters and values that apply to your environment:
+*** ECR_REPO
+*** ECS_CLUSTER
+*** APP = hello-jenkins
+*** REGION
+* Check GitHub hook trigger for GITScm polling
+* Pipeline > Definition = Pipeline script from SCM
+* SCM = Git
+* Repositories URL = https://github.com/omarlari/aws-jenkins-containers
+* Credentials = None
+* Script Path = Jenkinsfile
 
 == Conclusion
