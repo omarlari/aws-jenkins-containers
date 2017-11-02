@@ -23,6 +23,38 @@ Resources:
           FromPort: '22'
           ToPort: '22'
           CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 192.30.252.0/22
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 192.30.252.0/22
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: 192.30.252.0/22
+        - IpProtocol: tcp
+          FromPort: '9418'
+          ToPort: '9418'
+          CidrIp: 192.30.252.0/22
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 185.199.108.0/22
+        - IpProtocol: tcp
+          FromPort: '80'
+          ToPort: '80'
+          CidrIp: 185.199.108.0/22
+        - IpProtocol: tcp
+          FromPort: '443'
+          ToPort: '443'
+          CidrIp: 185.199.108.0/22
+        - IpProtocol: tcp
+          FromPort: '9418'
+          ToPort: '9418'
+          CidrIp: 185.199.108.0/22
       VpcId: !Ref Vpc
 
   Ec2Instance:
@@ -75,3 +107,8 @@ Resources:
       Path: /
       Roles:
       - !Ref 'AdminRole'
+Outputs:
+  PublicIP:
+    Value: !GetAtt Ec2Instance.PublicIp
+  PublicDNS:
+    Value: !GetAtt Ec2Instance.PublicDnsName

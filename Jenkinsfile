@@ -7,7 +7,7 @@ node {
    docker.build('hello')
 
    stage 'Push to ECR'
-   sh ("eval \$(docker run awscli ecr get-login --region ${REGION} --no-include-email | sed 's|https://||')")
+   sh ("eval \$(docker run awscli aws ecr get-login --region ${REGION} --no-include-email | sed 's|https://||')")
    docker.withRegistry('https://${ECR_REPO}') {
        docker.image('hello').push('${BUILD_NUMBER}')
    }
