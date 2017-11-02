@@ -52,6 +52,7 @@ a| image::./deploy-to-aws.png[link=https://console.aws.amazon.com/cloudformation
 
 |===
 
+
 === Prepare ec2 instance
 
 Clone Repository
@@ -82,6 +83,39 @@ Start Jenkins
 
     chmod u+x ~/aws-jenkins-containers/start-jenkins.sh
     sudo ~/aws-jenkins-containers/start-jenkins.sh
+
+=== GitHub Preparation
+
+Fork the sample application:
+
+https://github.com/omarlari/aws-container-sample-app
+
+Setup a Personal Access Token.
+
+image::github-access-token.png[jenkins]
+
+Log into GitHub “User X” account > Settings > Developer Setting > Personal access tokens > Generate new token. These are the minimum scopes you will need to support the Jenkins Webhook:
+
+repo
+admin:org
+admin:public_key
+admin:repo_hook
+
+Copy the personal access token, we will need to copy this over to Jenkins credentials.
+
+Next go to the forked repo. Click on Settings > Webhooks > Add webhook.
+
+image::github-webhook.png[jenkins]
+
+For the payload enter:
+
+    http://<IPADDRESS>/github-webook
+
+Where IP address is the public IP of your ec2 instance, the security group profile has already been setup to allow traffic from GitHub through cloudformation
+
+Then click Add webhook.
+
+Once this is completed you can go to the bottom of the screen and send a test payload.
 
 === Configure Jenkins
 
@@ -120,12 +154,10 @@ Amazon ECR plugin
 
 Go ahead and click the check-box on the bottom to restart Jenkins and then log back in.
 
-=== Configure Pipeline Job
-
-First we need to add ECR credentials into the Jenkins system
-
-
 === Configure Jenkins Job
+
+Note: This part can be skipped, the ECR plugin is not properly authenticating First we need to add ECR credentials into the Jenkins system
+
 
 
 == Conclusion
