@@ -17,6 +17,10 @@ homogenous clusters in different regions.
 ** An ECS service named 'hello-jenkins'
 *** this should be behind an ALB, listening on the root path on port 80
 
+* Operation Kubernetes cluster
+** config file located at ~/.kube/config
+** deploy the sample deployment `deployment-hello.yaml` from the sample app repo `https://github.com/omarlari/aws-container-sample-app`
+
 === Deploy the CloudFormation stack
 
 |===
