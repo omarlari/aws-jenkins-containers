@@ -17,10 +17,6 @@ homogenous clusters in different regions.
 ** An ECS service named 'hello-jenkins'
 *** this should be behind an ALB, listening on the root path on port 80
 
-Fork github repository. Setup Jenkins. Modify Security Group to allow traffic from GitHub, setup GitHub hook.
-
-http://<IPADDRESS>/github-webhook/
-
 === Deploy the CloudFormation stack
 
 |===
