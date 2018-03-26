@@ -61,7 +61,7 @@ Resources:
       Type: "AWS::EC2::Instance"
       Properties:
         IamInstanceProfile: !Ref AdminInstanceProfile
-        ImageId: "ami-ec33cc96"
+        ImageId: "ami-05b5277d"
         InstanceType: "t2.micro"
         KeyName:
           Ref: "KeyName"
@@ -73,6 +73,15 @@ Resources:
             SubnetId: !Ref Subnet
         UserData:
           "Fn::Base64": !Sub |
+          #!/bin/bash
+          git clone https://github.com/omarlari/aws-jenkins-containers.git
+          mkdir ~/jenkins-data
+          mkdir ~/.kube
+          cd aws-jenkins-containers
+          docker build -f AWSCLI -t awscli .
+          docker build -f KUBECTL -t kubectl .
+          chmod u+x ~/aws-jenkins-containers/start-jenkins.sh
+          sudo ~/aws-jenkins-containers/start-jenkins.sh
 
   AdminRole:
     Type: AWS::IAM::Role
