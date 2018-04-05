@@ -75,14 +75,19 @@ Resources:
           Fn::Base64:
             !Sub |
               #!/bin/bash
-              git clone https://github.com/omarlari/aws-jenkins-containers.git
-              mkdir ~/jenkins-data
-              mkdir ~/.kube
-              cd aws-jenkins-containers
-              docker build -f AWSCLI -t awscli .
-              docker build -f KUBECTL -t kubectl .
-              chmod u+x ~/aws-jenkins-containers/start-jenkins.sh
-              sudo ~/aws-jenkins-containers/start-jenkins.sh
+              yum install -y git
+              curl -o /home/ec2-user/jenkins-config.tgz https://s3.amazonaws.com/jenkins-demo-public/jenkins-config.tgz
+              sleep 180
+              tar -xzvf /home/ec2-user/jenkins-config.tgz -C /home/ec2-user/
+              sleep 60
+              git clone https://github.com/omarlari/aws-jenkins-containers.git /home/ec2-user/aws-jenkins-containers
+              sleep 60
+              mkdir /home/ec2-user/.kube
+              docker build -f /home/ec2-user/aws-jenkins-containers/dockerfiles/AWSCLI -t awscli .
+              docker build -f /home/ec2-user/aws-jenkins-containers/dockerfiles/KUBECTL -t kubectl .
+              chown -R ec2-user:ec2-user /home/ec2-user/*
+              chmod u+x /home/ec2-user/aws-jenkins-containers/start-jenkins.sh
+              /home/ec2-user/aws-jenkins-containers/start-jenkins.sh
 
   AdminRole:
     Type: AWS::IAM::Role
