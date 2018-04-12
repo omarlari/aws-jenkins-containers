@@ -7,10 +7,8 @@ Resources:
     Properties:
       CidrBlock: 10.0.0.0/16
 
-
   InternetGateway:
     Type: AWS::EC2::InternetGateway
-
 
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
@@ -25,7 +23,6 @@ Resources:
       AvailabilityZone: !Select [ 0, !GetAZs ]
       MapPublicIpOnLaunch: true
       CidrBlock: 10.0.0.0/24
-
 
   RouteTable:
     Type: AWS::EC2::RouteTable

@@ -62,7 +62,7 @@ Resources:
       Properties:
         IamInstanceProfile: !Ref AdminInstanceProfile
         ImageId: "ami-05b5277d"
-        InstanceType: "t2.micro"
+        InstanceType: "t2.large"
         KeyName:
           Ref: "KeyName"
         NetworkInterfaces:
