@@ -83,8 +83,10 @@ Resources:
               git clone https://github.com/omarlari/aws-jenkins-containers.git /home/ec2-user/aws-jenkins-containers
               sleep 60
               mkdir /home/ec2-user/.kube
-              docker build -f /home/ec2-user/aws-jenkins-containers/dockerfiles/AWSCLI -t awscli .
-              docker build -f /home/ec2-user/aws-jenkins-containers/dockerfiles/KUBECTL -t kubectl .
+              cd /home/ec2-user/aws-jenkins-containers/dockerfiles/AWSCLI
+              docker build -f AWSCLI -t awscli .
+              cd /home/ec2-user/aws-jenkins-containers/dockerfiles/KUBECTL
+              docker build -f KUBECTL -t kubectl .
               chown -R ec2-user:ec2-user /home/ec2-user/*
               chmod u+x /home/ec2-user/aws-jenkins-containers/start-jenkins.sh
               /home/ec2-user/aws-jenkins-containers/start-jenkins.sh
